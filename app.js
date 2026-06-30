@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const {getAllTodoList,createTodo,getTodoByID,deteleTodoById,updateTodoByID, filterByPriority} = require('./controller/todo');
 const {Login,Register} = require('./controller/userdetails');
 const{connectDb} = require('./config/db')
+require("dotenv").config();
 
 connectDb();
 const cors = require('cors')
