@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const {getAllTodoList,createTodo,getTodoByID,deteleTodoById,updateTodoByID, filterByPriority} = require('./controller/todo');
-const {Login,Register} = require('./controller/userdetails');
+const {Login,Register, googleLogin} = require('./controller/userdetails');
 const{connectDb} = require('./config/db')
 require("dotenv").config();
 
@@ -21,6 +21,7 @@ app.put('/api/v1/todo/:_id',updateTodoByID)
 app.post('/api/v1/todo/filter',filterByPriority)
 app.post('/api/v1/todo/signin',Register);
 app.post('/api/v1/todo/login',Login);
+app.post('/api/v1/todo/google',googleLogin);
 
 
 app.listen(5000,()=>{

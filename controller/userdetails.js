@@ -1,4 +1,5 @@
 const UserDetails = require('../model/userdetails')
+const { OAuth2Client } = require("google-auth-library");
 const bcrypt = require('bcrypt')
 
 exports.Register = async (req,res)=>{
@@ -46,3 +47,43 @@ exports.Login = async (req,res)=>{
         res.json({status:false,msg:err})
     }
 }
+
+exports.googleLogin = async (req, res) => {
+    try {
+        const credential = req.body;
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        const ticket = await client.verifyIdToken({
+            idToken: credential.credentials,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        
+        console.log(ticket);
+        const payload = ticket.getPayload();
+
+        const googleId = payload.sub;
+        const name = payload.name;
+        const email = payload.email;
+        const picture = payload.picture;
+
+        console.log({
+            googleId,
+            name,
+            email,
+            picture
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Google token received"
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+};
